@@ -1,6 +1,6 @@
 import '@xyflow/react/dist/style.css';
 import { ReactFlow, Background, Controls } from '@xyflow/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Flow = () => {
@@ -18,7 +18,6 @@ const Flow = () => {
     const [dishPositionY, setDishPositionY] = useState(100);
     const [activeCategory, setActiveCategory] = useState(null);
     const [categoriesVisible, setCategoriesVisible] = useState(false);
-
 
     const fetchCategories = async () => {
         try {
@@ -47,13 +46,11 @@ const Flow = () => {
 
     const handleNodeClick = async (event, node) => {
         if (node.id === 'explorer') {
-
             if (!categoriesVisible) {
                 fetchCategories();
             }
             return;
         }
-
 
         if (node.data.label && !dishes.some(dish => dish.idMeal === node.id)) {
             if (activeCategory && activeCategory !== node.id) {
@@ -106,25 +103,27 @@ const Flow = () => {
     };
 
     return (
-        <div className='w-full h-screen border-gray-300'>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodeClick={handleNodeClick}>
-                <Background />
-                <Controls />
-            </ReactFlow>
+        <div className="w-full h-screen flex border-gray-300"> {/* Apply flex here */}
+            <div className="w-3/4 h-full">
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodeClick={handleNodeClick}>
+                    <Background />
+                    <Controls />
+                </ReactFlow>
+            </div>
             {selectedDish && (
-                <div className="dish-details p-4 border border-gray-300">
-                    <h2 className="text-xl  font-bold mb-4">{selectedDish.strMeal}</h2>
+                <div className="dish-details w-1/4 p-4 border-l border-gray-300"> {/* Fixed width for dish details */}
+                    <h2 className="text-xl font-bold mb-4">{selectedDish.strMeal}</h2>
                     <div className="flex justify-center">
                         <img
                             src={selectedDish.strMealThumb}
                             alt={selectedDish.strMeal}
-                            className="w-[400px] h-auto rounded-lg"
+                            className="w-[200px] h-auto rounded-lg"
                         />
                     </div>
-                    <p className='mt-4'>{selectedDish.strInstructions}</p>
+                    <p className="mt-4">{selectedDish.strInstructions}</p>
                 </div>
             )}
         </div>
