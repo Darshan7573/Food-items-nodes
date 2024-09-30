@@ -1,6 +1,6 @@
 import '@xyflow/react/dist/style.css';
-import { ReactFlow, Background, Controls } from '@xyflow/react';
-import { useEffect, useState } from 'react';
+import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 
 const Flow = () => {
@@ -102,13 +102,30 @@ const Flow = () => {
         }
     };
 
+    const onNodesChange = useCallback(
+        (changes) => {
+            setNodes((nds) => applyNodeChanges(changes, nds));
+        },
+        [setNodes]
+    );
+
+    const onEdgesChange = useCallback(
+        (changes) => {
+            setEdges((eds) => applyEdgeChanges(changes, eds));
+        },
+        [setEdges]
+    );
     return (
         <div className="w-full h-screen flex border-gray-300"> {/* Apply flex here */}
             <div className="w-3/4 h-full">
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}
-                    onNodeClick={handleNodeClick}>
+                    onNodeClick={handleNodeClick}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                >
+
                     <Background />
                     <Controls />
                 </ReactFlow>
