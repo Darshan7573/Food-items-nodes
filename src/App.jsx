@@ -1,9 +1,9 @@
-import React from 'react'
+import Flow from "./Flow"
 
 const App = () => {
   return (
-    <div>
-      <h1 className='text-red-400'>Hello</h1>
+    <div className="w-full h-full">
+      <Flow />
     </div>
   )
 }
